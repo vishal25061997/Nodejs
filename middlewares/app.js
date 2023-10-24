@@ -1,20 +1,20 @@
-const http = require("http")
+const bodyParser = require("body-parser")
 const express = require("express")
+const adminRouter = require("./routes/admin")
+const shopRouter = require("./routes/shop")
 
 const app = express()
 
-app.use((req ,res ,next)=>{
-    console.log("first middleware")
-    next()
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(adminRouter)
+app.use(shopRouter)
+
+app.use((req,res,next)=>{
+    res.status(404).send('<h1>page not found</h1>')
 })
 
-app.use((req ,res ,next)=>{
-    console.log("second middleware")
-    res.send("<h1>Hello from node js</h2>")
-})
 
-const server = http.createServer(app)
 
-server.listen(3000, ()=>{
+app.listen(3000, ()=>{
     console.log("server is running at port 3000")
 })
